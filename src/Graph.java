@@ -6,10 +6,19 @@ import java.util.Set;
 
 public class Graph {
 	private String name;
-	private Map<Graph, Integer> routes;
+	private HashMap<Graph, Integer> routes; // Gerichteten Kanten zu anderen Knoten
+	private Graph prev; // Vorgängerknoten
+	private Integer distance; // Entfernung zum Startknoten
+	
 	public Graph(String name) {
 		this.name=name;
 		routes = new HashMap<Graph, Integer>();
+		prev = null;
+		distance = null;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void addRoute(Graph g, Integer i) {
@@ -26,11 +35,46 @@ public class Graph {
 		return removed;
 	}
 	
-	public Integer getDistance(Graph g) {
+	public Integer getRoute(Graph g) {
 		Integer distance = null;
 		if(g != null && routes.containsKey(g)) {
 			distance = routes.get(g);
 		}
 		return distance;
+	}
+	
+	public boolean hasPrev() {
+		return prev == null;
+	}
+	
+	/*
+	 * TODO Methode schreiben
+	 * @return true, wenn erfolgreich geändert.
+	 * @return false, bei Fehler (übergebener Graph hat keine Kante zu dem aktuellen)
+	 */
+	public boolean setPrev(Graph g) {
+		if (g.getRoute(this) == null) {
+			return false;
+		} else {
+			prev = g;
+			setDistance(false);
+		}
+		return true;
+	}
+	
+	public void setDistance(boolean isStart) {
+		if (isStart) {
+			distance = 0;
+		} else {
+		distance = prev.getDistance() + prev.getRoute(this);
+		}
+	}
+	
+	public Integer getDistance() {
+		return distance;
+	}
+	
+	public HashMap<Graph, Integer> getAllRoutes() {
+		return (HashMap<Graph, Integer>) routes;
 	}
 }
