@@ -47,6 +47,10 @@ public class Graph {
 		return prev == null;
 	}
 	
+	public Graph getPrev() {
+		return prev;
+	}
+	
 	/*
 	 * TODO Methode schreiben
 	 * @return true, wenn erfolgreich geändert.

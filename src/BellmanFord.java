@@ -12,7 +12,7 @@ public class BellmanFord {
 		Graph aNode;
 		
 		
-		for (int i = 0; i < lNodes.size(); i++) {
+		for (int i = 0; i < lNodes.size()-1; i++) {
 			for (Entry<String, Graph> node : lNodes.entrySet()) {
 				aNode = node.getValue();
 				for (Entry<Graph, Integer> way : aNode.getAllRoutes().entrySet()) {
@@ -38,7 +38,7 @@ public class BellmanFord {
 					break;
 				}
 			}
-			if (negativeCircle = true) {
+			if (negativeCircle == true) {
 				break;
 			}
 		}

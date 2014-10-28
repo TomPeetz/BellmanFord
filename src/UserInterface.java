@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 public class UserInterface {
 	private Scanner scanner;
@@ -51,7 +52,7 @@ public class UserInterface {
 		for (String lItem: lNodes.keySet()) {
 			print("\n"+lItem);
 		}	
-		print("\n\n");		
+		print("\n\n");
 		
 		Graph lStartNode = null;
 		while (lStartNode == null) { // Solange fragen, bis einer der vorgegebenen Knoten ausgwählt wird
@@ -60,12 +61,31 @@ public class UserInterface {
 			scanner.nextLine();
 		}
 		
-		boolean lHasNegativeCircle = BellmanFord.bellmanFord(lNodes, lStartNode);		
-		if (lHasNegativeCircle) {
-			print("");
-		}
-		
 		scanner.close();
+		
+		print("\n\n");		
+		boolean lHasNegativeCircle = BellmanFord.bellmanFord(lNodes, lStartNode);
+		
+		if (lHasNegativeCircle) {
+			print("Der Graph hat keine kürzesten Wege, da er einen negativen Kreis enthält.");
+		} else {			
+			Graph lNode;		
+			String lPath;
+			for (Entry<String, Graph> lItem: lNodes.entrySet()) {
+				lNode =  lItem.getValue();
+				
+				print("Distanz zu: "+ lItem.getKey() +" = "+ lNode.getDistance() + "\n");
+				
+				lPath = lNode.getName();
+				lNode = lNode.getPrev();				
+				while (lNode != null) {
+					lPath = lNode.getName() +" -> "+ lPath;					
+					lNode = lNode.getPrev();
+				}				
+				print("Strecke: "+ lPath +"\n\n");
+				
+			}
+		}		
 	}	
 	
 	private static void print(String pString) {
@@ -75,13 +95,13 @@ public class UserInterface {
 	public static void main(String[] args) {
 		print("Dieses Programm wendet den Bellman-Ford-Algorithmus auf einen selbst angelegten Graphen an.");
 		
-		while (true) {
+		//while (true) {
 			try {
 				new UserInterface().run();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		//}
 	}
 	
 }
