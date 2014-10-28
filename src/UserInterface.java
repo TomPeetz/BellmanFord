@@ -52,11 +52,11 @@ public class UserInterface {
 		for (String lItem: lNodes.keySet()) {
 			print("\n"+lItem);
 		}	
-		print("\n\n");
+		print("\n");
 		
 		Graph lStartNode = null;
 		while (lStartNode == null) { // Solange fragen, bis einer der vorgegebenen Knoten ausgwählt wird
-			print("Ernennen Sie einen DIESER Knoten zum Startknoten: ");			
+			print("Ernennen Sie einen DIESER Knoten zum Startknoten: ");
 			lStartNode = lNodes.get(scanner.next());
 			scanner.nextLine();
 		}
@@ -68,22 +68,28 @@ public class UserInterface {
 		
 		if (lHasNegativeCircle) {
 			print("Der Graph hat keine kürzesten Wege, da er einen negativen Kreis enthält.");
-		} else {			
+		} else {	
+			print("Distanz und Strecke zu allen Knoten des Graphen. Ausgehend vom Startknoten...");
+			
 			Graph lNode;		
 			String lPath;
 			for (Entry<String, Graph> lItem: lNodes.entrySet()) {
-				lNode =  lItem.getValue();
+				lNode = lItem.getValue();
 				
-				print("Distanz zu: "+ lItem.getKey() +" = "+ lNode.getDistance() + "\n");
-				
-				lPath = lNode.getName();
-				lNode = lNode.getPrev();				
-				while (lNode != null) {
-					lPath = lNode.getName() +" -> "+ lPath;					
-					lNode = lNode.getPrev();
-				}				
-				print("Strecke: "+ lPath +"\n\n");
-				
+				if (lNode.getDistance() == null) { // Graph ist nicht zusammenhängend
+					print("\n\nDer Knoten "+ lNode.getName() +" ist vom Startknoten nicht erreichbar.");
+				} else {				
+					print("\n\nDistanz zu: "+ lItem.getKey() +" = "+ lNode.getDistance() + "\n");
+					
+					lPath = lNode.getName();
+					lNode = lNode.getPrev();				
+					while (lNode != null) {
+						lPath = lNode.getName() +" -> "+ lPath;					
+						lNode = lNode.getPrev();
+					}
+					
+					print("Strecke: "+ lPath);
+				}
 			}
 		}		
 	}	
