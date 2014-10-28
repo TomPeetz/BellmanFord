@@ -45,9 +45,7 @@ public class UserInterface {
 			
 			lNodeA.addRoute(lNodeB, lEdgeWeight);
 		}
-		
-		// -> TODO: Was wenn Graph nicht zusammenhängend ?
-		
+				
 		print("\nFolgende Knoten wurden angelegt:");
 		for (String lItem: lNodes.keySet()) {
 			print("\n"+lItem);
@@ -101,13 +99,11 @@ public class UserInterface {
 	public static void main(String[] args) {
 		print("Dieses Programm wendet den Bellman-Ford-Algorithmus auf einen selbst angelegten Graphen an.");
 		
-		//while (true) {
-			try {
-				new UserInterface().run();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		//}
+		try {
+			new UserInterface().run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
