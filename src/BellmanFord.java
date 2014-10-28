@@ -16,7 +16,10 @@ public class BellmanFord {
 			for (Entry<String, Graph> node : lNodes.entrySet()) {
 				aNode = node.getValue();
 				for (Entry<Graph, Integer> way : aNode.getAllRoutes().entrySet()) {
-					if (aNode.getDistance() + aNode.getRoute(way.getKey()) < way.getKey().getDistance()) {
+					if (aNode.getDistance() == null) break;
+					if (way.getKey().getDistance() == null) {
+						way.getKey().setPrev(aNode);
+					} else if (aNode.getDistance() + aNode.getRoute(way.getKey()) < way.getKey().getDistance()) {
 						way.getKey().setPrev(aNode);
 					}
 				}
@@ -27,7 +30,10 @@ public class BellmanFord {
 		for (Entry<String, Graph> node : lNodes.entrySet()) {
 			aNode = node.getValue();
 			for (Entry<Graph, Integer> way : aNode.getAllRoutes().entrySet()) {
-				if (aNode.getDistance() + aNode.getRoute(way.getKey()) < way.getKey().getDistance()) {
+				if (aNode.getDistance() == null) break;
+				if (way.getKey().getDistance() == null) {
+					way.getKey().setPrev(aNode);
+				} else if (aNode.getDistance() + aNode.getRoute(way.getKey()) < way.getKey().getDistance()) {
 					negativeCircle = true;
 					break;
 				}
