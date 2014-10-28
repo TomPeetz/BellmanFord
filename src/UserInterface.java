@@ -1,29 +1,23 @@
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class UserInterface {
-	private Scanner input;
+	private Scanner scanner;
 	
 	public UserInterface() {	
-		input = new Scanner(System.in);
+		scanner = new Scanner(System.in);
 	}
 	
 	
-	private void print(String pString) {
-		System.out.print(pString);
-	}
-	
-	public void run() {
-		print("(Einführungstext)\n\n\n");		
+	public void run() {		
+		print("\n\n\nEin neuer Graph wird angelegt...\n");
 		
 		HashMap<String, Graph> lNodes = new HashMap<String, Graph>();
 		
-		
-		print("Wie viele Kanten sollen angelegt werden ? : ");		
-		Integer lEdgeCount = input.nextInt();
-		print("Legen Sie Kanten mit folgender Syntax an... \n\n");	
+		print("Wie viele Kanten soll er haben ? : ");
+		Integer lEdgeCount = scanner.nextInt();		
+		print("Legen Sie die Kanten nach folgendem Schema an... \n\n");	
 		
 		print("Kante X: [Name Knoten1] [Name Knoten2] [Gewicht Kante]\n\n");
 		
@@ -34,9 +28,9 @@ public class UserInterface {
 		for (int i = 1; i <= lEdgeCount; i++) {
 			print("Kante "+i+": ");
 			
-			lNodeAName = input.next();
-			lNodeBName = input.next();
-			lEdgeWeight = input.nextInt();
+			lNodeAName = scanner.next();
+			lNodeBName = scanner.next();
+			lEdgeWeight = scanner.nextInt();
 			
 			if (!lNodes.containsKey(lNodeAName)) {
 				lNodes.put(lNodeAName, new Graph(lNodeAName));
@@ -60,20 +54,34 @@ public class UserInterface {
 		print("\n\n");		
 		
 		Graph lStartNode = null;
-		while (lStartNode == null) {
+		while (lStartNode == null) { // Solange fragen, bis einer der vorgegebenen Knoten ausgwählt wird
 			print("Ernennen Sie einen DIESER Knoten zum Startknoten: ");			
-			lStartNode = lNodes.get(input.next());
-			input.nextLine();
+			lStartNode = lNodes.get(scanner.next());
+			scanner.nextLine();
 		}
 		
-		input.close();
+		boolean lHasNegativeCircle = BellmanFord.bellmanFord(lNodes, lStartNode);		
+		if (lHasNegativeCircle) {
+			print("");
+		}
 		
-		// -> TODO: irgendwas mit 'lStartNode' machen
+		scanner.close();
 	}	
 	
+	private static void print(String pString) {
+		System.out.print(pString);
+	}
 	
 	public static void main(String[] args) {
-		new UserInterface().run();
+		print("Dieses Programm wendet den Bellman-Ford-Algorithmus auf einen selbst angelegten Graphen an.");
+		
+		while (true) {
+			try {
+				new UserInterface().run();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
