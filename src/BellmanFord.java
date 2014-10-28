@@ -4,8 +4,14 @@ import java.util.Map.Entry;
 
 public class BellmanFord {
 	public static boolean bellmanFord(HashMap<String, Graph> lNodes, Graph startNode) {
+		
+		for (Entry<String, Graph> node : lNodes.entrySet()) {
+			node.getValue().setPrev(null);
+		}
 		startNode.setDistance(true);
 		Graph aNode;
+		
+		
 		for (int i = 0; i < lNodes.size(); i++) {
 			for (Entry<String, Graph> node : lNodes.entrySet()) {
 				aNode = node.getValue();

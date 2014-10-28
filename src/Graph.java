@@ -53,7 +53,10 @@ public class Graph {
 	 * @return false, bei Fehler (übergebener Graph hat keine Kante zu dem aktuellen)
 	 */
 	public boolean setPrev(Graph g) {
-		if (g.getRoute(this) == null) {
+		if (g == null) {
+			prev = g;
+			setDistance(false);
+		} else if (g.getRoute(this) == null) {
 			return false;
 		} else {
 			prev = g;
@@ -66,7 +69,11 @@ public class Graph {
 		if (isStart) {
 			distance = 0;
 		} else {
-		distance = prev.getDistance() + prev.getRoute(this);
+			if(prev == null) {
+				distance = null;
+			} else {
+				distance = prev.getDistance() + prev.getRoute(this);
+			}
 		}
 	}
 	
