@@ -1,0 +1,131 @@
+\documentclass[a4paper]{article}
+	\usepackage[ngerman]{babel}
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage{graphicx}
+	\usepackage{caption}
+	\usepackage{booktabs}
+	\usepackage{subcaption}
+	
+	\begin{document}
+		\begin{titlepage}
+			\begin{center}
+				\begin{figure}[h]
+					\begin{center}
+						\includegraphics[width=12cm]{img/logo-fh.eps}
+					\end{center}
+				\end{figure}
+
+				\vspace{150pt}
+				\textbf{\Huge{Das \\ Traveling Salesman Problem}} \\ \vspace{30pt}
+				\large				
+				
+%Hier Namen der Herausgeber einfügen				
+				Bruder 1\\
+				Bruder 2\\
+				Daniel Hammers\\
+				Andreas Hantschel\\
+				Andreas Pahlen\\ \vspace{60pt}
+
+%Projektleiter eingeben				
+				\textbf{Projektleiter:} \\
+				Frau Dings, Herr Dangs
+			\end{center}
+			\thispagestyle{empty}
+		\end{titlepage}
+		
+		\begin{abstract}
+			In vielen Anwendungsbereichen kann es erforderlich sein, den günstigsten Weg zwischen zwei Punkten zu finden. Hierbei sollen aber nicht nur Entfernung von Start und Ziel, sondern vielmehr die individuellen Reisekosten inklusive negativer Reisekosten als Thematik behandelt werden.  \\
+			
+			Diese Ausarbeitung beschäftigt sich im Allgemeinem mit dem Bellmann-Ford-Algorithmus. Zudem stellt sie ein Programm zur Lösung vor.
+		\end{abstract}
+		\thispagestyle{empty}
+		\newpage
+		
+		\tableofcontents
+		\newpage
+		
+		\section{Allgemeines}
+		Im Folgenden Abschnitt beschäftigen wir uns zunächst mit der Definition des Problems, wer es als solches erkannte und stellen später einige Lösungsansätze vor.
+		\subsection{Das Problem}
+		1.1 Das Problem des Handelsreisenden
+Das „Traveling-Salesman-Problem“ (im Folgenden TSP), welches auch als Handlungsreisenden-, Rundreisen- oder Botenproblem bekannt ist, kann man zweifellos als eines der bekanntesten und am meisten beachteten  Problemstellungen betiteln.
+Bei der allgemeinen Lösung des TSP stellt man sich einen Handelsreisenden vor, der eine bestimmte Anzahl von Städten besuchen, und seine Reise dort beenden soll, wo er gestartet ist. Hierbei soll je nach Lage der Städte die optimale Rundreise ermittelt werden, wobei optimal hier für den geringsten Ressourcenverbrauch steht.
+Die Einfachheit des Grundproblems hat sicherlich zu der Popularität beigetragen, jedoch muss auch ergänzend erwähnt werden, dass das TSP auch bei der Umsetzung von Mikrochips etc. angewandt wird. Praktisch überall, wo es darum geht „Botengänge“ zu erledigen, sei es tatsächlich als Bote (Post, DHL, etc.) oder auch bei der Datenübertragung. Die Bezeichnung Städte und Straßen im Folgenden, die wir hier als einzige Bezeichnung beibehalten, kann also auch auf andere Bereiche abstrahiert werden.
+So beschäftigen sich nicht nur Mathematiker mit dem Problem, sondern unter Anderem auch Chemiker, Physiker, Informatiker, und Fachleute aus anderen Bereichen was wiederum dazu beiträgt, dass durch das Befassen mit dem Grundproblem, viele andere kleinere Probleme gelöst oder optimiert werden. In der historischen Analyse werden wir hierauf näher eingehen.
+\vspace{100pt}
+		\subsection{Anwendung}
+		1.2 Anwendung
+Sucht man nach Anwendungsmöglichkeiten für das TSP, so fallen zuerst alle Botenaufgaben ins Auge, die direkt mit der Übermittlung von Gütern in Bezug genommen werden.  Hierzu zählen die Post, Paketversanddienste, Speiselieferanten oder auch die Aufgabe des klassischen handelnden Reisenden.
+Allerdings nutzt man zum Beispiel auch Teillösungen des TSP um Mikrocontroller in der Informatik zu optimieren oder im Bereich der Biologie ganze DNS-Sequenzierungen zu simulieren.
+\newpage
+		\subsection{Historisches}
+		1.3 Historisches
+Trotz oder vielleicht gerade wegen der Einfachheit des Grundproblems des TSP hat man erst in Zeiten des Kapitalismus erst wirklich angefangen über die Optimierung von Rundreisen nachzudenken. Früher waren Botengänge in der Regel Einzelaufgaben, und auch wenn es einige Reiseführer aus dem Mittelalter gibt, wo gute Rundreisemöglichkeiten für einzelne Touren erläutert sind, fing man erst im 20. Jahrhundert damit an das Problem mathematisch zu betrachten.
+Im Jahr 1736 hat Euler das erste Mal über das TSP im entfernteren Sinne als „Königsberger Brückenproblem“ geschrieben.
+Die erste konkrete Erwähnung als Traveling-Salesman-Problem fand jedoch erst im Jahre 1932 von Menger statt:
+„Wir bezeichnen als Botenproblem (weil diese Frage in der Praxis von jedem Postboten, übrigens auch von vielen Reisenden zu lösen ist) die Aufgabe, für endlich viele Punkte, deren paarweise Abstände bekannt sind, den kürzesten die Punkte verbindenden Weg zu finden. Dieses Problem ist natürlich stets durch endlich viele Versuche lösbar. Regeln, welche die Anzahl der Versuche unter die Anzahl der Permutationen der gegebenen Punkte herunterdrücken würden, sind nicht bekannt. Die Regel, man sollte vom Ausgangspunkt erst zum nächsten gelegenen Punkt, dann zu dem diesen nächstgelegenen Punkt gehen usw., liefert im allgemeinen nicht den kürzesten Weg.“ – Menger 05. Februar 1932
+\\
+
+In den 50er, und 60er Jahren wurde das Problem zunehmend publik und aufgrund geforderter Kostenoptimierungen (Versand, Mikrochipproduktion) auch ernsthaft bearbeitet. Hierbei entstanden die ersten Problemlösungen, die später nur noch entfernt mit dem eigentlichen TSP zusammenhängen. Interessant wurden hier vor allem einzelne Methoden die das TSP in verschiedene Teilprobleme aufgliedern. 
+Das TSP ist auch heute noch Top-aktuell, denn es gibt immer noch KEINEN Algorithmus, der das Problem wirklich zu 100\% in absehbarer Rechenzeit für eine beliebige Anzahl von Städten lösen kann!
+Der aktuellste Ansatz ist vom 25.03.2013 wo man einen „Blob“ so programmierte, dass er zunächst alle Städte umschließt und dann unbenutzte Teilstrecken einfach meidet und sich so umformt, dass am Ende eine optimale Tour bleibt.
+\\
+		\subsection{Lösungsansätze}
+		1.4 Löungsansätze
+Um das TSP zu lösen gibt es natürlich mehrere Ansätze. Die einfachste, aber zugleich auch rechenintensivste Methode ist der „Holzhammer“, die sogenannte Brute-Force-Methode. Hierbei werden einfach alle Möglichkeiten der Tour ausprobiert um die optimale Rundreise zu bestimmen. Dieser einfache Algorithmus sprengt jedoch ab einem gewissen Wert unsere derzeiten Rechenleistungen (siehe Tabelle).
+Plant man also eine Rundreise mit mehr als 15 Städten, so benötigt man andere Methoden um die optimale Tour zu finden. Hier kommen den Lösungsansätzen die Popularität und die Übertragbarkeit des TSP äußerst zugute. Durch die verschiedenen Ansichtsweisen der einzelnen Fachgebiete (Biologie, Chemie, Physik, Mathematik, Logistik, etc) kommen hier viele heuristische Lösungswege zusammen.
+Im Prinzip lässt sich bisher sagen, dass es einige sehr gute heuristische Algorithmen gibt, die das Problem zu ausreichender Zufriedenheit lösen. Das heißt, eine weitere Verbesserung der Route würde aufgrund des Rechenaufwands kaum Sinn machen. Dies erreicht man, indem man sich eine „obere Schranke“ setzt und diese je nach Differenz zur „unteren Schranke“, welche die optimale Lösung für die Tour darstellt, klassifiziert. So ist bei einer Anzahl von 15 Städten eine realistische Abweichung von 1\% bereits mehr als ausreichend um zu behaupten, die Tour wäre optimal geplant. Wie erwähnt, der Rechenaufwand wäre in diesem Fall prinzipiell höher als die Einsparungen, die man dadurch erreichen könnte (In einem Tag Rechenzeit hat man ja bereits schon einen Teil der Tour zurückgelegt).\\
+Also sollte man bei der Planung eines solchen Algorithmus einplanen, wie genau dieser arbeiten soll und wann die Genauigkeit ausreicht. Alle weiteren Problemlösungen des Problems setzen hier an und versuchen entweder die Laufzeit zu optimieren, oder die Abweichung der Schranken so klein wie möglich zu halten. Optimal wäre logischerweise eine Abweichung von 0,0\%, was aber wiederum bisher nur  durch Brute-Force möglich ist.
+\\
+
+Im Folgenden werden wir Ihnen zwei heuristische Alternativen zum herkömmlichen Brute-Force aufzeigen und verdeutlichen, wo die Vor- und Nachteile der gewählten Methoden liegen.
+\newpage
+		
+		\section{Ameisenalgorithmus}
+		
+		\subsection{Funktionsweise und Geschichte}
+		
+		
+		
+		\subsection{Messungen}
+		
+
+		
+		\section{Simulated Annealing}
+\\
+
+		\subsection{Funktionsweise und Geschichte}
+
+\\
+
+		\subsection{Messungen}
+		
+
+
+
+\\
+\\
+
+		\subsection{Pseudocode}
+		Im Pseudocode sieht dieses Verfahren wie folgt aus:
+01  für jedes v aus V    \\               
+02      Distanz(v) := unendlich, Vorgänger(v) := keiner\\
+03  Distanz(s) := 0\\
+04  wiederhole n - 1 mal               \\
+05      für jedes (u,v) aus E\\
+06          wenn Distanz(u) + Gewicht(u,v) < Distanz(v)\\
+07          dann\\
+08              Distanz(v) := Distanz(u) + Gewicht(u,v)\\
+09              Vorgänger(v) := u\\
+10  für jedes (u,v) aus E                \\
+11      wenn Distanz(u) + Gewicht(u,v) < Distanz(v) dann\\
+12          STOPP mit Ausgabe "Es gibt einen Zyklus negativen Gewichtes."\\
+
+13  Ausgabe Distanz\\
+\newpage
+
+		\subsection{Vergleich von Laufzeit und Optimierungsrate zwischen SA und ACO}
+		
+
+	\end{document}
